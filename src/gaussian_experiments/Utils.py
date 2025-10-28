@@ -56,7 +56,7 @@ def save_pickle(obj: Any, output_dir: PathLike, filename: str = "object.pkl") ->
     return file_path
 
 
-def load_pickle(output_dir: PathLike, filename: str = "object.pkl") -> Any:
+def load_pickle(output_dir: PathLike, filename) -> Any:
     """
     Load a Python object from a pickle file using an explicit output directory and filename.
 

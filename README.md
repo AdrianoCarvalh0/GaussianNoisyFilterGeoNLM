@@ -73,11 +73,13 @@ This `data/output` layout lets users run scripts and immediately see images writ
 
 ## Running Experiments
 
-If you use a driver like `src/run_benchmarks.py`, run it directly:
+Notebooks Test src/gaussian_experiments ==> Gaussian_low.ipynb
+
+<!-- If you use a driver like `src/run_benchmarks.py`, run it directly:
 
 ```bash
 python -m src.run_benchmarks   --sigma-noise 0.05 --sigma-gauss 1.0 --seed 7   --out data/output/moderate_noisy/test/nlm/out.json
-```
+``` -->
 
 You can adapt arguments and output paths for **BM3D**, **NLM**, and **GEO-NLM**.  
 (Optionally add a `Makefile` with targets like `make dirs`, `make demo-low`, etc.)

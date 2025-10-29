@@ -335,6 +335,7 @@ def select_best_h_using_adaptive_q(image, image_gpu, q_nlm_candidates, f, t, alp
 
         # Mixed score (PSNR + scaled SSIM)
         score = alpha * psnr + (1 - alpha) * (ssim * 100)
+        print(f"h = {h_nlm:.2f} | PSNR = {psnr:.2f} | SSIM = {ssim:.4f} | Score = {score:.2f}")
 
         # Keep best
         if score > best_score:
@@ -343,5 +344,5 @@ def select_best_h_using_adaptive_q(image, image_gpu, q_nlm_candidates, f, t, alp
             best_result = result_processed
             best_psnr = psnr
             best_ssim = ssim
-
+    print(f"\n[SELECTED] H = {best_q_nlm:.2f} | PSNR = {best_psnr:.2f} | SSIM = {best_ssim:.4f} | SCORE = {best_score:.2f}")
     return best_result, best_q_nlm, best_psnr, best_ssim, best_score

@@ -25,13 +25,13 @@ No package solving occurs during container build.
 To avoid errors and ensure GPU detection:
 
 ### 1️⃣ Install and configure WSL2
-Install **Ubuntu** from Microsoft Store.  
-Set WSL2 as default:
+- Install **Ubuntu** from Microsoft Store.  
+- Set WSL2 as default:
 
-powershell
-wsl --set-default-version 2
+- powershell
+- wsl --set-default-version 2
 
-###2️⃣ Configure Docker Desktop
+### 2️ Configure Docker Desktop
 
 Open Docker Desktop → go to:
 

@@ -20,8 +20,6 @@ No package solving occurs during container build.
 > Use **WSL2 (Ubuntu)** and open the repository from the **WSL filesystem**  
 > (avoid paths like `\\wsl.localhost\...` — they cause permission and performance issues).
 
----
-
 ## Recommended Setup on Windows (WSL2 + Docker Desktop)
 
 To avoid errors and ensure GPU detection:
@@ -30,11 +28,10 @@ To avoid errors and ensure GPU detection:
 Install **Ubuntu** from Microsoft Store.  
 Set WSL2 as default:
 
-```powershell
+powershell
 wsl --set-default-version 2
 
-
-2️⃣ Configure Docker Desktop
+###2️⃣ Configure Docker Desktop
 
 Open Docker Desktop → go to:
 
@@ -49,6 +46,8 @@ Open Docker Desktop → go to:
 ✔️ Keep checked: “Enable integration with additional distros”
 
 Click Apply & Restart.
+
+
 
 ## Quick Start (Docker CLI)
 
@@ -82,6 +81,7 @@ docker run --gpus=all --shm-size=4g -it --rm \
     -v "$PWD":/workspace -w /workspace gaussian-frozen bash
 
 
+## Repository Layout
 GaussianExperiments/
 ├─ .devcontainer/                      # VS Code container settings
 ├─ data/

@@ -21,17 +21,18 @@ No package solving occurs during container build.
 > (avoid paths like `\\wsl.localhost\...` — they cause permission and performance issues).
 
 ## Recommended Setup on Windows (WSL2 + Docker Desktop)
+---
 
 To avoid errors and ensure GPU detection:
 
-### 1️⃣ Install and configure WSL2
-- Install **Ubuntu** from Microsoft Store.  
-- Set WSL2 as default:
+### Install and configure WSL2
+Install **Ubuntu** from Microsoft Store.  
+Set WSL2 as default:
 
-- powershell
-- wsl --set-default-version 2
+powershell
+wsl --set-default-version 2
 
-### 2️ Configure Docker Desktop
+### Configure Docker Desktop
 
 Open Docker Desktop → go to:
 
@@ -48,30 +49,29 @@ Open Docker Desktop → go to:
 Click Apply & Restart.
 
 
+### Quick Start (VS Code + Dev Containers)
+---
 
-## Quick Start (Docker CLI)
+1 - Open this folder in VS Code (inside WSL2).
 
-Quick Start (VS Code + Dev Containers)
+2 - Press **Ctrl+Shift+P →**
+**Dev Containers: Rebuild and Reopen in Container**
 
-Open this folder in VS Code (inside WSL2).
+3 - This will:
 
-Press Ctrl+Shift+P →
-Dev Containers: Rebuild and Reopen in Container
+- Build the full Docker environment
+- Restore Conda env via conda-spec-linux-64.txt
+- Install pip packages from requirements-pip.txt
 
-This will:
+## Sanity check:
 
-Build the full Docker environment
-
-Restore Conda env via conda-spec-linux-64.txt
-
-Install pip packages from requirements-pip.txt
-
-Sanity check:
 
 python - << 'PY'
 import cupy as cp, numpy as np, skimage, bm3d
 print("GPUs detected:", cp.cuda.runtime.getDeviceCount())
 PY
+
+## Quick Start (Docker CLI)
 
 # Build image
 docker build -t gaussian-frozen .
@@ -109,17 +109,17 @@ GaussianExperiments/
 ├─ Makefile
 └─ README.md
 
-Running Experiments
+## Running Experiments
 
-From inside the container:
+From **inside the container:**
 
-LOW noise
+**LOW noise**
 python -m src.main_low
 
-MODERATE noise
+**MODERATE noise**
 python -m src.main_moderate
 
-HIGH noise
+**HIGH noise**
 python -m src.main_high
 
 
@@ -138,7 +138,7 @@ Consolidated metrics spreadsheet (.xlsx)
 
 Selected hyperparameters (h, mult, etc.)
 
-Experiment Pipeline (Flowchart)
+## Experiment Pipeline (Flowchart)
 
 The following diagram summarizes the complete pipeline:
 
@@ -152,7 +152,7 @@ flowchart LR
     E --> F
     F --> G[Save outputs<br/>images + pickle + XLSX<br/>data/output/.../test/]
 
-Reproducibility & Environment
+## Reproducibility & Environment
 
 This project is fully reproducible because:
 
@@ -182,7 +182,7 @@ conda list --explicit --md5 > conda-spec-linux-64.txt
 
 Avoid adding Conda-managed packages to requirements-pip.txt.
 
-Makefile (Helper)
+## Makefile (Helper)
 
 The repository includes a Makefile for convenience.
 
@@ -194,7 +194,7 @@ make high      # run HIGH-noise experiments
 make all       # run all experiments (low + moderate + high)
 make clean     # wipe output data
 
-Data & Outputs
+## Data & Outputs
 
 Large experiment outputs can bloat the repo.
 Use Git LFS if needed:
@@ -202,7 +202,7 @@ Use Git LFS if needed:
 git lfs install
 echo "data/** filter=lfs diff=lfs merge=lfs -text" >> .gitattributes
 
-Troubleshooting
+## Troubleshooting
 ❌ GPU not found inside container
 
 Check host GPU:
@@ -239,7 +239,7 @@ Modify environment inside the container
 
 Re-export lockfile
 
-Reproducing Results (For Reviewers)
+## Reproducing Results (For Reviewers)
 
 This section recreates all tables/figures from the manuscript.
 
@@ -279,13 +279,7 @@ Noise Level	Results (XLSX)
 Low noise	gnlm_bm3d_low_filtereds.xlsx
 Moderate noise	gnlm_bm3d_moderate_filtereds.xlsx
 High noise	gnlm_bm3d_high_filtereds.xlsx
-License
-
-License: MIT
-
-SPDX-Identifier: MIT
 
 ## License
-
 License: [MIT](./LICENSE)  
 SPDX-Identifier: `MIT`

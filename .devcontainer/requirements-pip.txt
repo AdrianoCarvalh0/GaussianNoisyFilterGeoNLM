@@ -3,3 +3,4 @@ bm3d==4.0.3
 bm4d==4.2.5
 opencv-python-headless==4.11.0.86
 svgwrite==1.4.3
+openpyxl>=3.1

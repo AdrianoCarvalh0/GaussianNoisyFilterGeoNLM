@@ -83,12 +83,12 @@ docker run --gpus=all --shm-size=4g -it --rm \
 
 ## Repository Layout
 GaussianExperiments/
-├─ .devcontainer/                      # VS Code container settings
-├─ data/
-│  ├─ input/
-│  │  └─ general_images/               # Clean input images (PNG/JPG)
-│  └─ output/
-│     ├─ low_noisy/
+|- .devcontainer/      # VS Code container settings
+|- data/
+|  |- input/
+│  |  |- general_images/ # Clean input images 
+│  |- output/
+│     |- low_noisy/
 │     │  └─ test/{bm3d,nlm,geonlm}/
 │     ├─ moderate_noisy/
 │     │  └─ test/{bm3d,nlm,geonlm}/

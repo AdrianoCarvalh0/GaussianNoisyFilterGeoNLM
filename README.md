@@ -83,17 +83,17 @@ docker run --gpus=all --shm-size=4g -it --rm \
 
 ## Repository Layout
 GaussianExperiments/<br/>
-|- .devcontainer/      # VS Code container settings<br/>
-|- data/<br/>  
-|  |- input/<br/>  
-│  |  |- general_images/ # Clean input images  <br/>
-│  |- output/  
-│     |- low_noisy/
-│     │  └─ test/{bm3d,nlm,geonlm}/
-│     ├─ moderate_noisy/
-│     │  └─ test/{bm3d,nlm,geonlm}/
-│     └─ high_noisy/
-│        └─ test/{bm3d,nlm,geonlm}/
+├─ .devcontainer/                    # VS Code container settings/<br/> 
+├─ data/<br/> 
+│  ├─ input/<br/> 
+│  │  └─ general_images/               # Clean input images (PNG/JPG)/<br/> 
+│  └─ output/<br/> 
+│     ├─ low_noisy/
+│     │  └─ test/{bm3d,nlm,geonlm}/<br/> 
+│     ├─ moderate_noisy/<br/> 
+│     │  └─ test/<br/> {bm3d,nlm,geonlm}/<br/> 
+│     └─ high_noisy/<br/> 
+│        └─ test/<br/> {bm3d,nlm,geonlm}/<br/> 
 ├─ src/
 │  ├─ main_low.py                      # LOW noise experiments
 │  ├─ main_moderate.py                 # MODERATE noise experiments
@@ -111,6 +111,7 @@ GaussianExperiments/<br/>
 ├─ requirements-pip.txt                # Extra pip-only dependencies
 ├─ Makefile
 └─ README.md
+
 
 ## Running Experiments
 

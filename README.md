@@ -83,10 +83,14 @@ docker run --gpus=all --shm-size=4g -it --rm \
 
 ## Repository Layout
 GaussianExperiments/<br/>
-├─ .devcontainer/                    # VS Code container settings/<br/> 
+├─ .devcontainer/                 # VS Code container settings<br/> 
+│   └─ Dockerfile <br/> 
+│   └─ conda-spec-linux-64.txt    # Frozen Conda environment<br/> 
+│   └─ requirements-pip.txt       # Extra pip-only dependencies<br/> 
+│
 ├─ data/<br/> 
 │  ├─ input/<br/> 
-│  │  └─ general_images/               # Clean input images (PNG/JPG)/<br/> 
+│  │  └─ general_images/               # Clean input images (PNG/JPG)<br/> 
 │  └─ output/<br/> 
 │     ├─ low_noisy/
 │     │  └─ test/{bm3d,nlm,geonlm}/<br/> 
@@ -95,23 +99,19 @@ GaussianExperiments/<br/>
 │     └─ high_noisy/<br/> 
 │        └─ test/<br/> {bm3d,nlm,geonlm}/<br/> 
 ├─ src/
-│  ├─ main_low.py                      # LOW noise experiments
-│  ├─ main_moderate.py                 # MODERATE noise experiments
-│  ├─ main_high.py                     # HIGH noise experiments
-│  ├─ Gaussian_low.py
-│  ├─ Gaussian_moderate.py
-│  ├─ Gaussian_high.py
-│  ├─ noisy_functions.py
-│  ├─ nlm_functions.py
-│  ├─ geonlm_functions.py
-│  ├─ Utils.py
-│  └─ gaussian_experiments/            # Jupyter notebooks
-├─ Dockerfile
-├─ conda-spec-linux-64.txt             # Frozen Conda environment
-├─ requirements-pip.txt                # Extra pip-only dependencies
-├─ Makefile
-└─ README.md
-
+│  ├─ main_low.py                      # LOW noise experiments<br/> 
+│  ├─ main_moderate.py                 # MODERATE noise experiments<br/> 
+│  ├─ main_high.py                     # HIGH noise experiments<br/> 
+│  ├─ Gaussian_low.py<br/> 
+│  ├─ Gaussian_moderate.py<br/> 
+│  ├─ Gaussian_high.py<br/> 
+│  ├─ noisy_functions.py<br/> 
+│  ├─ nlm_functions.py<br/> 
+│  ├─ geonlm_functions.py<br/> 
+│  ├─ Utils.py<br/> 
+│  └─ gaussian_experiments/            # Jupyter notebooks<br/> 
+├─ Makefile<br/> 
+└─ README.md<br/> 
 
 ## Running Experiments
 
@@ -146,31 +146,31 @@ Selected hyperparameters (h, mult, etc.)
 
 The following diagram summarizes the complete pipeline:
 
-Clean images (data/input/general_images)
-        |
-        v
-Add synthetic Gaussian noise (low / moderate / high)
-        |
-        +-----------------------------+
-        |                             |
-        v                             v
-   NLM (adaptive h)               BM3D baseline
-        |
-        v
-  GEO-NLM (graph / geodesic)
-        |
-        +-----------+-------------------------+
-                    |                         |
-                    v                         v
-           Metric computation          Metric computation
-             (PSNR, SSIM, Score)        (PSNR, SSIM, Score)
-                    \                         /
-                     \                       /
-                      +---------------------+
-                               |
-                               v
-            Save outputs (images + .pkl + .xlsx)
-            under data/output/.../test/{NLM,GEONLM,BM3D}/
+Clean images (data/input/general_images)<br/> 
+        |<br/> 
+        v<br/> 
+Add synthetic Gaussian noise (low / moderate / high)<br/> 
+        |<br/> 
+        +-----------------------------+v<br/> 
+        |                             |<br/> 
+        v                             v<br/> 
+   NLM (adaptive h)               BM3D baseline<br/> 
+        |<br/> 
+        v<br/> 
+  GEO-NLM (graph / geodesic)<br/> 
+        |<br/> 
+        +-----------+-------------------------+<br/> 
+                    |                         |<br/> 
+                    v                         v<br/> 
+           Metric computation          Metric computationv
+             (PSNR, SSIM, Score)        (PSNR, SSIM, Score)<br/> 
+                    \                         /<br/> 
+                     \                       /<br/> 
+                      +---------------------+<br/> 
+                               |<br/> 
+                               v<br/> 
+            Save outputs (images + .pkl + .xlsx)<br/> 
+            under data/output/.../test/{NLM,GEONLM,BM3D}/<br/> 
 
 
 ## Reproducibility & Environment

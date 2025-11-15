@@ -88,9 +88,12 @@ GaussianExperiments/
 │  ├─ input/
 │  │  └─ general_images/               # Clean input images (PNG/JPG)
 │  └─ output/
-│     ├─ low_noisy/test/{bm3d,nlm,geonlm}/
-│     ├─ moderate_noisy/test/{bm3d,nlm,geonlm}/
-│     └─ high_noisy/test/{bm3d,nlm,geonlm}/
+│     ├─ low_noisy/
+│     │  └─ test/{bm3d,nlm,geonlm}/
+│     ├─ moderate_noisy/
+│     │  └─ test/{bm3d,nlm,geonlm}/
+│     └─ high_noisy/
+│        └─ test/{bm3d,nlm,geonlm}/
 ├─ src/
 │  ├─ main_low.py                      # LOW noise experiments
 │  ├─ main_moderate.py                 # MODERATE noise experiments
@@ -142,15 +145,32 @@ Selected hyperparameters (h, mult, etc.)
 
 The following diagram summarizes the complete pipeline:
 
-flowchart LR
-    A[Clean image<br/>data/input/general_images] --> B[Add Gaussian noise<br/>low / moderate / high]
-    B --> C[NLM<br/>(adaptive h selection)]
-    C --> D[GEO-NLM<br/>geodesic / graph-based]
-    B --> E[BM3D<br/>baseline]
-    C --> F[Metric computation<br/>PSNR / SSIM / Score]
-    D --> F
-    E --> F
-    F --> G[Save outputs<br/>images + pickle + XLSX<br/>data/output/.../test/]
+Clean images (data/input/general_images)
+        |
+        v
+Add synthetic Gaussian noise (low / moderate / high)
+        |
+        +-----------------------------+
+        |                             |
+        v                             v
+   NLM (adaptive h)               BM3D baseline
+        |
+        v
+  GEO-NLM (graph / geodesic)
+        |
+        +-----------+-------------------------+
+                    |                         |
+                    v                         v
+           Metric computation          Metric computation
+             (PSNR, SSIM, Score)        (PSNR, SSIM, Score)
+                    \                         /
+                     \                       /
+                      +---------------------+
+                               |
+                               v
+            Save outputs (images + .pkl + .xlsx)
+            under data/output/.../test/{NLM,GEONLM,BM3D}/
+
 
 ## Reproducibility & Environment
 
@@ -225,7 +245,6 @@ Ensure project is located inside:
 
 /home/<user>/...
 
-
 NOT inside:
 
 /mnt/c/Users/...
@@ -243,29 +262,28 @@ Re-export lockfile
 
 This section recreates all tables/figures from the manuscript.
 
-A. Build environment
+**A. Build environment**
 
 Use VS Code Dev Containers (recommended):
 
 Dev Containers: Rebuild and Reopen in Container
 
-B. Place images
+**B. Place images**
 
 Put clean images into:
 
 data/input/general_images/
 
-C. Run experiments
+**C. Run experiments**
 make low
 make moderate
 make high
-
 
 Or all:
 
 make all
 
-D. Find results
+**D. Find results**
 
 Each experiment outputs:
 
@@ -273,7 +291,7 @@ data/output/<noise>_noisy/test/{NLM,GEONLM,BM3D}/
 data/output/<noise>_noisy/test/results/*.xlsx
 
 
-Tables used in the paper:
+**Tables used in the paper:**
 
 Noise Level	Results (XLSX)
 Low noise	gnlm_bm3d_low_filtereds.xlsx

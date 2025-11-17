@@ -95,9 +95,9 @@ GaussianExperiments/<br/>
 │     ├─ low_noisy/
 │     │  └─ test/{bm3d,nlm,geonlm}/<br/> 
 │     ├─ moderate_noisy/<br/> 
-│     │  └─ test/<br/> {bm3d,nlm,geonlm}/<br/> 
+│     │  └─ test/> {bm3d,nlm,geonlm}/<br/> 
 │     └─ high_noisy/<br/> 
-│        └─ test/<br/> {bm3d,nlm,geonlm}/<br/> 
+│        └─ test/> {bm3d,nlm,geonlm}/<br/> 
 ├─ src/
 │  ├─ main_low.py                      # LOW noise experiments<br/> 
 │  ├─ main_moderate.py                 # MODERATE noise experiments<br/> 

@@ -81,13 +81,13 @@ def generate_gaussian_experiment_moderate(parameters):
         m, n = img.shape  # Image dimensions (not used later, but kept for clarity)
 
         # Add moderate Gaussian noise to create the noisy observation
-        ruidosa = add_moderate_noise_gaussian(img)
+        noised = add_moderate_noise_gaussian(img)
 
         # Clip noisy image to valid intensity range [0, 255]
-        ruidosa = np.clip(ruidosa, 0, 255)
+        noised = np.clip(noised, 0, 255)
 
         # --- CPU/GPU data preparation ---
-        img_noisse_gaussian_np = ruidosa.astype(np.float32)
+        img_noisse_gaussian_np = noised.astype(np.float32)
 
         # Estimate noise level (sigma) from the noisy image in [0,255]
         estimated_sigma_gaussian_np = estimate_sigma(img_noisse_gaussian_np)
@@ -140,9 +140,9 @@ def generate_gaussian_experiment_moderate(parameters):
     array_gnlm_bm3d_moderate_filtereds = []
 
     # Reload the NLM results to use them as input for GEO-NLM and BM3D
-    vetor = load_pickle(dir_out_results, name_pickle_nlm_output_moderate)
+    vector = load_pickle(dir_out_results, name_pickle_nlm_output_moderate)
 
-    for array in vetor:
+    for array in vector:
         # Retrieve data saved during the NLM phase
         img_noisse_gaussian_np = array['img_noisse_gaussian_np']
         nlm_h = array['nlm_h']
@@ -227,20 +227,18 @@ def generate_gaussian_experiment_moderate(parameters):
         img_bm3d_gray = np.clip(img_bm3d_gray * 255, 0, 255).astype(np.uint8)
 
         # Normalize the noisy image to [0,1] for BM3D input
-        ruidosa_normalizada = img_noisse_gaussian_np.astype(np.float32) / 255.0
+        normalized_noizy = img_noisse_gaussian_np.astype(np.float32) / 255.0
 
         # Estimate noise level sigma for BM3D
-        sigma_est = estimate_sigma(ruidosa_normalizada, channel_axis=None)
+        sigma_est = estimate_sigma(normalized_noizy, channel_axis=None)
 
-        # BM3D profile and execution
-        inicio = time.time()
-        perfil_bm3d = BM3DProfile()
-        fim = time.time()
-        time_bm3d = fim - inicio  # BM3D profiling time (not the denoising itself)
+        # BM3D profile and execution       
+        perfil_bm3d = BM3DProfile()    
+        
 
         # Apply BM3D denoising
         denoised = bm3d(
-            ruidosa_normalizada,
+            normalized_noizy,
             sigma_psd=sigma_est,
             profile=perfil_bm3d
         )
@@ -284,6 +282,7 @@ def generate_gaussian_experiment_moderate(parameters):
             'score_nlm': score_nlm,
             'score_gnlm': score_gnlm,
             'score_bm3d': score_bm3d,
+            'time_geonlm': time_geonlm,
 
             'file_name': file_name,
         }

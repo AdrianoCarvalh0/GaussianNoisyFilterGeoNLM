@@ -146,10 +146,14 @@ Selected hyperparameters (h, mult, etc.)
 
 ```mermaid
 graph TD;
-    A-->B;
-    A-->C;
-    B-->D;
-    C-->D;
+    A[Clean image<br/>data/input/general_images] --> B[Add Gaussian noise<br/>low / moderate / high]
+    B --> C[NLM<br/>(adaptive h selection)]
+    C --> D[GEO-NLM<br/>geodesic / graph-based]
+    B --> E[BM3D<br/>baseline]
+    C --> F[Metrics<br/>PSNR / SSIM / Score]
+    D --> F
+    E --> F
+    F --> G[Save outputs<br/>images + pickle + XLSX<br/>data/output/.../test/]
 ```
 
 

@@ -145,15 +145,16 @@ Selected hyperparameters (h, mult, etc.)
 ## Experiment Pipeline (Flowchart)
 
 ```mermaid
-flowchart LR;
-    A[Clean image<br/>data/input/general_images] --> B[Add Gaussian noise<br/>low / moderate / high];
-    B --> C[NLM<br/>(adaptive h selection)];
-    C --> D[GEO-NLM<br/>geodesic / graph-based];
-    B --> E[BM3D<br/>baseline];
-    C --> F[Metrics<br/>PSNR / SSIM / Score];
-    D --> F;
-    E --> F;
-    F --> G[Save outputs<br/>images + pickle + XLSX<br/>data/output/.../test/];
+graph TD;
+   graph TD
+    A["Clean image\ndata/input/general_images"] --> B["Add Gaussian noise\n(low / moderate / high)"]
+    B --> C["NLM\n(adaptive h selection)"]
+    C --> D["GEO-NLM\n(geodesic / graph-based)"]
+    B --> E["BM3D\nbaseline"]
+    C --> F["Metrics\nPSNR / SSIM / Score"]
+    D --> F
+    E --> F
+    F --> G["Save outputs\nimages + pickle + XLSX\ndata/output/.../test/"]
 ```
 
 

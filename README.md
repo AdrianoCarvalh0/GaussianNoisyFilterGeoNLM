@@ -144,33 +144,14 @@ Selected hyperparameters (h, mult, etc.)
 
 ## Experiment Pipeline (Flowchart)
 
-The following diagram summarizes the complete pipeline:
+```mermaid
+graph TD;
+    A-->B;
+    A-->C;
+    B-->D;
+    C-->D;
+```
 
-Clean images (data/input/general_images)<br/> 
-        |<br/> 
-        v<br/> 
-Add synthetic Gaussian noise (low / moderate / high)<br/> 
-        |<br/> 
-        +-----------------------------+v<br/> 
-        |                             |<br/> 
-        v                             v<br/> 
-   NLM (adaptive h)               BM3D baseline<br/> 
-        |<br/> 
-        v<br/> 
-  GEO-NLM (graph / geodesic)<br/> 
-        |<br/> 
-        +-----------+-------------------------+<br/> 
-                    |                         |<br/> 
-                    v                         v<br/> 
-           Metric computation          Metric computationv
-             (PSNR, SSIM, Score)        (PSNR, SSIM, Score)<br/> 
-                    \                         /<br/> 
-                     \                       /<br/> 
-                      +---------------------+<br/> 
-                               |<br/> 
-                               v<br/> 
-            Save outputs (images + .pkl + .xlsx)<br/> 
-            under data/output/.../test/{NLM,GEONLM,BM3D}/<br/> 
 
 
 ## Reproducibility & Environment

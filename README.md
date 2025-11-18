@@ -145,7 +145,7 @@ Selected hyperparameters (h, mult, etc.)
 ## Experiment Pipeline (Flowchart)
 
 ```mermaid
-graph TD;
+flowchart LR;
     A[Clean image<br/>data/input/general_images] --> B[Add Gaussian noise<br/>low / moderate / high];
     B --> C[NLM<br/>(adaptive h selection)];
     C --> D[GEO-NLM<br/>geodesic / graph-based];

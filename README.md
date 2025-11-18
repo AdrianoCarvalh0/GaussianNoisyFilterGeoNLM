@@ -146,17 +146,31 @@ Selected hyperparameters (h, mult, etc.)
 
 ```mermaid
 graph TD
-    A["Clean image\ndata/input/general_images"] --> B["Add Gaussian noise\n(low / moderate / high)"]
-    B --> C["NLM\n(adaptive h selection)"]
-    C --> D["GEO-NLM\n(geodesic / graph-based)"]
-    B --> E["BM3D\nbaseline"]
-    C --> F["Metrics\nPSNR / SSIM / Score"]
+
+    A["Clean image
+data/input/general_images"] --> B["Add Gaussian noise
+(low / moderate / high)"]
+
+    B --> C["NLM
+(adaptive h selection)"]
+
+    C --> D["GEO-NLM
+(geodesic / graph-based)"]
+
+    B --> E["BM3D
+baseline"]
+
+    C --> F["Metrics
+PSNR / SSIM / Score"]
+
     D --> F
     E --> F
-    F --> G["Save outputs\nimages + pickle + XLSX\ndata/output/.../test/"]
+
+    F --> G["Save outputs
+images + pickle + XLSX
+data/output/.../test/"]
+
 ```
-
-
 
 ## Reproducibility & Environment
 

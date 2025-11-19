@@ -6,7 +6,7 @@ if __name__ == '__main__':
     root_dir_output_high = f'/workspace/data/output/high_noisy/test'
 
     # Directory containing the general input images used in the experiment
-    dir_images_general = f'/workspace/data/input/general_images'
+    dir_images_general = f'/workspace/data/input/0'
       
     # Dictionary of parameters passed to the experiment generator
     parameters = {

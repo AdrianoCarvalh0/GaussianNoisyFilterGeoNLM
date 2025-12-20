@@ -99,7 +99,7 @@ def generate_gaussian_experiment_high(parameters):
         h_nlm = compute_adaptive_q(estimated_sigma_gaussian_np)
 
         # Define a range of candidate h values around h_nlm
-        q_nlm_candidates = np.array([h_nlm + delta for delta in range(-0, 100, 1)])
+        q_nlm_candidates = np.array([h_nlm + delta for delta in range(200, 400, 1)])
 
         # IMPORTANT: reference image must also be in [0,255]
         img_filtered_nlm, nlm_h, psnr_nlm, ssim_nlm, score_nlm = select_best_h_using_adaptive_q(

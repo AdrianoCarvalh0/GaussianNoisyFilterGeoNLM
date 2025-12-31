@@ -2,24 +2,24 @@ from skimage.restoration import estimate_sigma
 import numpy as np
 import cupy as cp
 import skimage
-from Utils import (read_directories, save_pickle, save_results_to_xlsx, load_pickle, get_multiplier)
-from nlm_functions import (compute_adaptive_q, select_best_h_using_adaptive_q)
-from geonlm_functions import run_geonlm_pipeline
+from functions.Utils import (read_directories, save_pickle, save_results_to_xlsx, load_pickle, get_multiplier)
+from functions.noisy_functions import add_high_noise_gaussian
+from functions.nlm_functions import (compute_adaptive_q, select_best_h_using_adaptive_q)
+from gaussian_experiments.functions.geonlm_functions import run_geonlm_pipeline
 import time
-from Utils import (save_results_to_xlsx, load_pickle)
 from bm3d import bm3d, BM3DProfile
 from skimage.restoration import estimate_sigma
 from skimage.color import rgb2gray
 from skimage.metrics import peak_signal_noise_ratio, structural_similarity
 
 
-def generate_gaussian_experiment_real(parameters):
+def generate_gaussian_experiment_high(parameters):
     """
-    Run the real-noise Gaussian denoising experiment using NLM, GEO-NLM, and BM3D.
+    Run the high-noise Gaussian denoising experiment using NLM, GEO-NLM, and BM3D.
     
     The function:
       1. Reads all images in dir_images_general.
-      2. Adds real-level Gaussian noise.
+      2. Adds high-level Gaussian noise.
       3. Estimates sigma and computes an adaptive NLM parameter h.
       4. Runs NLM and stores intermediate results in a pickle file.
       5. Reloads those results to run GEO-NLM and BM3D.
@@ -28,36 +28,34 @@ def generate_gaussian_experiment_real(parameters):
     """
 
     # Unpack configuration parameters
-    dir_noisy_real_images = parameters['dir_noisy_real_images']
-    dir_non_noisy_real_images = parameters['dir_non_noisy_real_images']
-    
+    root_dir_output_high = parameters['root_dir_output_high']
+    dir_images_general = parameters['dir_images_general']
     dir_out_nlm = parameters['dir_out_nlm']
     dir_out_geonlm = parameters['dir_out_geonlm']
     dir_out_bm3d = parameters['dir_out_bm3d']
     dir_out_results = parameters['dir_out_results']
-    name_pickle_nlm_output_real = parameters['name_pickle_nlm_output_real']
-    name_pickle_results_gnlm_bm3d_output_real = parameters['name_pickle_results_gnlm_bm3d_output_real']
-    name_results_xlsx_nlm_gnlm_bm3d_output_real = parameters['name_results_xlsx_nlm_gnlm_bm3d_output_real']
+    name_pickle_nlm_output_high = parameters['name_pickle_nlm_output_high']
+    name_pickle_results_gnlm_bm3d_output_high = parameters['name_pickle_results_gnlm_bm3d_output_high']
+    name_results_xlsx_nlm_gnlm_bm3d_output_high = parameters['name_results_xlsx_nlm_gnlm_bm3d_output_high']
     f = parameters['f']        # Patch radius (NLM / GEO-NLM)
     t = parameters['t']        # Search window radius (NLM / GEO-NLM)
     alpha = parameters['alpha']  # Weight parameter for adaptive score / geometry
 
-    
-    array_img_originals = read_directories(dir_non_noisy_real_images)
-    array_img_noisy = read_directories(dir_noisy_real_images)
+    # List all input image filenames in the general image directory
+    array_dir = read_directories(dir_images_general)
 
     # Will store intermediate NLM results for all images
-    array_nln_real_filtereds = []
+    array_nln_high_filtereds = []
 
     # --------------------------
-    # 1) NLM PHASE (real NOISE)
+    # 1) NLM PHASE (high NOISE)
     # --------------------------
-    for file in array_img_originals:
+    for file in array_dir:
 
         file_name = file
 
         # Read image from disk
-        img = skimage.io.imread(f'{dir_non_noisy_real_images}/{file_name}')
+        img = skimage.io.imread(f'{dir_images_general}/{file_name}')
 
         # If the image has 4 dimensions (e.g. multi-page TIFF), use only the first slice
         if img.ndim == 4:
@@ -81,19 +79,14 @@ def generate_gaussian_experiment_real(parameters):
 
         m, n = img.shape  # Image dimensions (not used later, but kept for clarity)
 
-        img_noised = skimage.io.imread(f'{dir_noisy_real_images}/{file_name}')
-        img_noised = img_noised[0, :, :] if len(img_noised.shape) > 2 else img_noised
-        if len(img_noised.shape) > 2:
-            img_noised = skimage.color.rgb2gray(img_noised)
-            img_noised = 255 * img_noised    
-        
+        # Add high Gaussian noise to create the noisy observation
+        noised = add_high_noise_gaussian(img,sigma=50)
 
-        # Clipa imagem para intervalo [0, 255]
-        img_noised[np.where(img_noised > 255)] = 255
-        img_noised[np.where(img_noised < 0)] = 0
+        # Clip noisy image to valid intensity range [0, 255]
+        noised = np.clip(noised, 0, 255)
 
         # --- CPU/GPU data preparation ---
-        img_noisse_gaussian_np = img_noised.astype(np.float32)
+        img_noisse_gaussian_np = noised.astype(np.float32)
 
         # Estimate noise level (sigma) from the noisy image in [0,255]
         estimated_sigma_gaussian_np = estimate_sigma(img_noisse_gaussian_np)
@@ -105,7 +98,7 @@ def generate_gaussian_experiment_real(parameters):
         h_nlm = compute_adaptive_q(estimated_sigma_gaussian_np)
 
         # Define a range of candidate h values around h_nlm
-        q_nlm_candidates = np.array([h_nlm + delta for delta in range(-50, 50, 1)])
+        q_nlm_candidates = np.array([h_nlm + delta for delta in range(200, 400, 1)])
 
         # IMPORTANT: reference image must also be in [0,255]
         img_filtered_nlm, nlm_h, psnr_nlm, ssim_nlm, score_nlm = select_best_h_using_adaptive_q(
@@ -128,7 +121,7 @@ def generate_gaussian_experiment_real(parameters):
             'score_nlm': score_nlm,
             'file_name': file_name,
         }
-        array_nln_real_filtereds.append(dct)
+        array_nln_high_filtereds.append(dct)
 
         # Save NLM-filtered image to disk
         skimage.io.imsave(
@@ -137,16 +130,16 @@ def generate_gaussian_experiment_real(parameters):
         )
 
     # Save all NLM results (for all images) to a pickle file
-    save_pickle(array_nln_real_filtereds, dir_out_results, name_pickle_nlm_output_real)
+    save_pickle(array_nln_high_filtereds, dir_out_results, name_pickle_nlm_output_high)
 
     # ---------------------------------------
-    # 2) BM3D AND GEO-NLM PHASE (real NOISE)
+    # 2) BM3D AND GEO-NLM PHASE (high NOISE)
     # ---------------------------------------
 
-    array_gnlm_bm3d_real_filtereds = []
+    array_gnlm_bm3d_high_filtereds = []
 
     # Reload the NLM results to use them as input for GEO-NLM and BM3D
-    vector = load_pickle(dir_out_results, name_pickle_nlm_output_real)
+    vector = load_pickle(dir_out_results, name_pickle_nlm_output_high)
 
     for array in vector:
         # Retrieve data saved during the NLM phase
@@ -159,7 +152,7 @@ def generate_gaussian_experiment_real(parameters):
         estimated_sigma_gaussian = array['estimated_sigma_gaussian']
 
         # Reload the original (clean) image from disk
-        img = skimage.io.imread(f'{dir_non_noisy_real_images}/{file_name}')
+        img = skimage.io.imread(f'{dir_images_general}/{file_name}')
         if img.ndim == 4:
             img = img[0]
 
@@ -283,23 +276,23 @@ def generate_gaussian_experiment_real(parameters):
             'psnr_nlm': psnr_nlm,
             'psnr_gnlm': psnr_gnlm,
             'psnr_bm3d': psnr_bm3d,
-            
+
             'score_nlm': score_nlm,
             'score_gnlm': score_gnlm,
             'score_bm3d': score_bm3d,
-            'time_geonlm': time_geonlm,            
+            'time_geonlm': time_geonlm,
 
             'file_name': file_name,
         }
 
-        array_gnlm_bm3d_real_filtereds.append(dict)
+        array_gnlm_bm3d_high_filtereds.append(dict)
 
     # Save the combined GEO-NLM and BM3D results to pickle
-    save_pickle(array_gnlm_bm3d_real_filtereds, dir_out_results, name_pickle_results_gnlm_bm3d_output_real)
+    save_pickle(array_gnlm_bm3d_high_filtereds, dir_out_results, name_pickle_results_gnlm_bm3d_output_high)
 
     # Export all results (NLM, GEO-NLM, BM3D) to an XLSX spreadsheet
     save_results_to_xlsx(
-        array_gnlm_bm3d_real_filtereds,
+        array_gnlm_bm3d_high_filtereds,
         dir_out_results,
-        name_results_xlsx_nlm_gnlm_bm3d_output_real
+        name_results_xlsx_nlm_gnlm_bm3d_output_high
     )

@@ -1,8 +1,13 @@
+import sys
+from pathlib import Path
+PROJECT_ROOT = Path(__file__).resolve().parents[1]
+sys.path.append(str(PROJECT_ROOT))
+
 import numpy as np
 import sklearn.neighbors as sknn
 import networkx as nx
 from joblib import Parallel, delayed
-from nlm_functions import (mirror_cpu)   
+from functions.nlm_functions import (mirror_cpu)   
 from skimage.metrics import peak_signal_noise_ratio, structural_similarity
 
 def process_pixel(i, j, img_n, f, t, h, nn, m, n):

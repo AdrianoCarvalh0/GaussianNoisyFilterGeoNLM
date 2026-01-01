@@ -1,3 +1,8 @@
+import sys
+from pathlib import Path
+PROJECT_ROOT = Path(__file__).resolve().parents[1]
+sys.path.append(str(PROJECT_ROOT))
+
 import numpy as np
 
 def add_low_noise_gaussian(img):

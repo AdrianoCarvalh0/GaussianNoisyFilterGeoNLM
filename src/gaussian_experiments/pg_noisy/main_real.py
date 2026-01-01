@@ -3,11 +3,11 @@ from Gaussian_real import generate_gaussian_experiment_real
 if __name__ == '__main__':
 
     # Base output directory for the real-noise experiment results
-    root_dir_output_real = f'/workspace/data/output/real_noisy/test'
+    root_dir_output_real = f'/workspace/data/output/pg_noisy/test'
 
     # Directory containing the general input images used in the experiment
-    dir_noisy_real_images = f'/workspace/data/input/noisy_real_images'
-    dir_non_noisy_real_images = f'/workspace/data/input/non_noisy_real_images'
+    dir_noisy_real_images = f'/workspace/data/input/pg'
+    dir_non_noisy_real_images = f'/workspace/data/input/pg_noisy'
   
       
     # Dictionary of parameters passed to the experiment generator

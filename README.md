@@ -117,7 +117,6 @@ GaussianExperiments/<br/>
 |  |   └─ pg_noisy/  # Poisson–Gaussian noise experiments<br/>
 |  |   └─ set12/     # Set12 benchmark experiments<br/>
 |      └─ set50/     # 50-image dataset experiments<br/>
-├─ Makefile<br/>
 └─ README.md<br/>
 
 ## Running Experiments
@@ -126,7 +125,7 @@ All experiments are executed from **inside the container:** and are organized by
 Navigate to the desired dataset directory and run the corresponding main script for the noise regime of interest.
 
 cd src/gaussian_experiments/<dataset>/
-python -m main_<experiment>python -m src.main_low
+python -m main_<experiment>
 
 Where <dataset> can be:
 
@@ -150,6 +149,7 @@ High noise (σ = 25): main_high_25
 
 Extreme noise (σ = 50): main_high_50
 
+**Example**
 cd src/gaussian_experiments/set12
 python -m main_high_25
 
@@ -157,6 +157,7 @@ python -m main_high_25
 
 Experiments on real Poisson–Gaussian noisy images are located in:
 
+**Example**
 cd src/gaussian_experiments/pg_noisy
 python -m main_real
 
@@ -261,7 +262,6 @@ echo "data/** filter=lfs diff=lfs merge=lfs -text" >> .gitattributes
 Check host GPU:
 
 nvidia-smi
-
 
 Check Docker Desktop → WSL Integration → enable your distro
 

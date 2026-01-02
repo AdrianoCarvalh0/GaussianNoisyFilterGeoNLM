@@ -90,28 +90,33 @@ GaussianExperiments/<br/>
 │
 ├─ data/<br/> 
 │  ├─ input/<br/> 
-│  │  └─ general_images/               # Clean input images (PNG/JPG)<br/> 
+│  │  └─ general_images/ # Clean input images (PNG/gif)<br/> 
+│  │  └─ pg/             # Clean Poisson–Gaussian reference images (PNG)<br/>
+│  │  └─ pg_noisy/       # Poisson–Gaussian noisy images (PNG)<br/> 
+│  │  └─ set12/          # Set12 benchmark dataset images (PNG)<br/> 
 │  └─ output/<br/> 
 │     ├─ pg_noisy/
 │     │  └─ {bm3d,nlm,geonlm}/<br/> 
 │     ├─ set12/<br/> 
 │     │  └─ high_noisy/> {bm3d,geonlm,nlm,results,test}/<br/> 
-      │  └─ test/> {bm3d,nlm,geonlm}/<br/> 
-
-│     └─ set50/<br/> 
-│        └─ test/> {bm3d,nlm,geonlm}/<br/> 
+|     │  └─ high_noisy_25/> {bm3d,geonlm,nlm,results,test}/<br/> 
+|     │  └─ high_noisy_50/> {bm3d,geonlm,nlm,results,test}/<br/>
+|     │  └─ low_noisy/> {bm3d,geonlm,nlm,results,test}/<br/>
+|     │  └─ moderate_noisy/> {bm3d,geonlm,nlm,results,test}/<br/>
+|     ├─ set50/<br/> 
+|     │  └─ high_noisy/> {bm3d,geonlm,nlm,results,test}/<br/> 
+|     │  └─ high_noisy_25/> {bm3d,geonlm,nlm,results,test}/<br/> 
+|     │  └─ high_noisy_50/> {bm3d,geonlm,nlm,results,test}/<br/>
+|     │  └─ low_noisy/> {bm3d,geonlm,nlm,results,test}/<br/>
+|     │  └─ moderate_noisy/> {bm3d,geonlm,nlm,results,test}/<br/>
+|
 ├─ src/
-│  ├─ main_low.py                      # LOW noise experiments<br/> 
-│  ├─ main_moderate.py                 # MODERATE noise experiments<br/> 
-│  ├─ main_high.py                     # HIGH noise experiments<br/> 
-│  ├─ Gaussian_low.py<br/> 
-│  ├─ Gaussian_moderate.py<br/> 
-│  ├─ Gaussian_high.py<br/> 
-│  ├─ noisy_functions.py<br/> 
-│  ├─ nlm_functions.py<br/> 
-│  ├─ geonlm_functions.py<br/> 
-│  ├─ Utils.py<br/> 
-│  └─ gaussian_experiments/            # Jupyter notebooks<br/> 
+│  ├─ gaussian_experiments/
+│  │   └─ functions/<br/>      # Experiment-related utility functions<br/>   
+|  |   └─ metrics/<br/>  # Metric computation and result plotting<br/>
+|  |   └─ pg_noisy/<br/>  # Poisson–Gaussian noise experiments<br/> 
+|  |   └─ set12/<br/>  # Set12 benchmark experiments<br/> 
+|      └─ set50/<br/>  # 50-image dataset experiments<br/> 
 ├─ Makefile<br/> 
 └─ README.md<br/> 
 

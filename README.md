@@ -291,42 +291,6 @@ Modify environment inside the container
 
 Re-export lockfile
 
-## Reproducing Results (For Reviewers)
-
-This section recreates all tables/figures from the manuscript.
-
-**A. Build environment**
-
-Use VS Code Dev Containers (recommended):
-
-Dev Containers: Rebuild and Reopen in Container
-
-**B. Place images**
-
-Put clean images into:
-
-data/input/
-
-**C. Run experiments**
-
-
-make all
-
-**D. Find results**
-
-Each experiment outputs:
-
-data/output/<noise>_noisy/test/{NLM,GEONLM,BM3D}/
-data/output/<noise>_noisy/test/results/*.xlsx
-
-
-**Tables used in the paper:**
-
-Noise Level	Results (XLSX)
-Low noise	gnlm_bm3d_low_filtereds.xlsx
-Moderate noise	gnlm_bm3d_moderate_filtereds.xlsx
-High noise	gnlm_bm3d_high_filtereds.xlsx
-
 ## License
 License: [MIT](./LICENSE)  
 SPDX-Identifier: `MIT`

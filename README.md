@@ -92,11 +92,13 @@ GaussianExperiments/<br/>
 │  ├─ input/<br/> 
 │  │  └─ general_images/               # Clean input images (PNG/JPG)<br/> 
 │  └─ output/<br/> 
-│     ├─ low_noisy/
-│     │  └─ test/{bm3d,nlm,geonlm}/<br/> 
-│     ├─ moderate_noisy/<br/> 
-│     │  └─ test/> {bm3d,nlm,geonlm}/<br/> 
-│     └─ high_noisy/<br/> 
+│     ├─ pg_noisy/
+│     │  └─ {bm3d,nlm,geonlm}/<br/> 
+│     ├─ set12/<br/> 
+│     │  └─ high_noisy/> {bm3d,geonlm,nlm,results,test}/<br/> 
+      │  └─ test/> {bm3d,nlm,geonlm}/<br/> 
+
+│     └─ set50/<br/> 
 │        └─ test/> {bm3d,nlm,geonlm}/<br/> 
 ├─ src/
 │  ├─ main_low.py                      # LOW noise experiments<br/> 

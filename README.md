@@ -83,10 +83,10 @@ docker run --gpus=all --shm-size=4g -it --rm \
 
 ## Repository Layout
 GaussianExperiments/<br/>
-├─ .devcontainer/                 # VS Code container settings<br/> 
+├─ .devcontainer/               # VS Code container settings<br/> 
 │   └─ Dockerfile <br/> 
-│   └─ conda-spec-linux-64.txt    # Frozen Conda environment<br/> 
-│   └─ requirements-pip.txt       # Extra pip-only dependencies<br/> 
+│   └─ conda-spec-linux-64.txt  # Frozen Conda environment<br/> 
+│   └─ requirements-pip.txt     # Extra pip-only dependencies<br/> 
 │
 ├─ data/<br/> 
 │  ├─ input/<br/> 
@@ -112,11 +112,11 @@ GaussianExperiments/<br/>
 |
 ├─ src/<br/>
 │  ├─ gaussian_experiments/<br/>
-│  │   └─ functions/<br/>      # Experiment-related utility functions<br/>   
-|  |   └─ metrics/<br/>  # Metric computation and result plotting<br/>
-|  |   └─ pg_noisy/<br/>  # Poisson–Gaussian noise experiments<br/> 
-|  |   └─ set12/<br/>  # Set12 benchmark experiments<br/> 
-|      └─ set50/<br/>  # 50-image dataset experiments<br/> 
+│  │   └─ functions/ # Experiment-related utility functions<br/>   
+|  |   └─ metrics/   # Metric computation and result plotting<br/>
+|  |   └─ pg_noisy/  # Poisson–Gaussian noise experiments<br/> 
+|  |   └─ set12/     # Set12 benchmark experiments<br/> 
+|      └─ set50/     # 50-image dataset experiments<br/> 
 ├─ Makefile<br/> 
 └─ README.md<br/> 
 

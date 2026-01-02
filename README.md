@@ -129,28 +129,22 @@ python -m main_<experiment>
 
 Where <dataset> can be:
 
-set12 — Set12 benchmark experiments
-
-set50 — 50-image dataset experiments
-
-pg_noisy — real Poisson–Gaussian noisy image experiments
+- set12 — Set12 benchmark experiments
+- set50 — 50-image dataset experiments
+- pg_noisy — real Poisson–Gaussian noisy image experiments
 
 
 ## 🧪 Gaussian noise experiments (Set12 and Set50)
 For synthetic Gaussian noise experiments, the following noise regimes are available:
 
-Low noise: main_low
-
-Moderate noise: main_moderate
-
-High noise: main_high
-
-High noise (σ = 25): main_high_25
-
-Extreme noise (σ = 50): main_high_50
+- Low noise: main_low
+- Moderate noise: main_moderate
+- High noise: main_high
+- High noise (σ = 25): main_high_25
+- Extreme noise (σ = 50): main_high_50
 
 **Example**
-cd src/gaussian_experiments/set12
+```cd src/gaussian_experiments/set12
 python -m main_high_25
 
 ## 🌫️ Real Poisson–Gaussian experiments
@@ -158,33 +152,27 @@ python -m main_high_25
 Experiments on real Poisson–Gaussian noisy images are located in:
 
 **Example**
-cd src/gaussian_experiments/pg_noisy
+```cd src/gaussian_experiments/pg_noisy
 python -m main_real
 
 
 ## 📁 Outputs
 
 data/output/
-├── set12/
-├── set50/
-└── pg_noisy/
-    └── test/
-        ├── NLM/
-        ├── BM3D/
-        └── GEONLM/
+├── set12/<br/>
+├── set50/<br/>
+└── pg_noisy/<br/>
+    └── test/<br/>
+        ├── NLM/<br/>
+        ├── BM3D/<br/>
+        └── GEONLM/<br/>
 
 Each experiment generates:
 
-Denoised images (.png)
-
-Serialized result tables (.pkl)
-
-Consolidated metrics spreadsheets (.xlsx)
-
-Selected hyperparameters (e.g., 
-ℎ
-h, multipliers)
-
+- Denoised images (.png)
+- Serialized result tables (.pkl)
+- Consolidated metrics spreadsheets (.xlsx)
+- Selected hyperparameters (e.g., ℎ, multipliers)
 
 
 ## Experiment Pipeline (Flowchart)

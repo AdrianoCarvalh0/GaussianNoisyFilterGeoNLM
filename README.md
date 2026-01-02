@@ -110,8 +110,8 @@ GaussianExperiments/<br/>
 |     │  └─ low_noisy/> {bm3d,geonlm,nlm,results,test}/<br/>
 |     │  └─ moderate_noisy/> {bm3d,geonlm,nlm,results,test}/<br/>
 |
-├─ src/
-│  ├─ gaussian_experiments/
+├─ src/<br/>
+│  ├─ gaussian_experiments/<br/>
 │  │   └─ functions/<br/>      # Experiment-related utility functions<br/>   
 |  |   └─ metrics/<br/>  # Metric computation and result plotting<br/>
 |  |   └─ pg_noisy/<br/>  # Poisson–Gaussian noise experiments<br/> 

@@ -18,7 +18,7 @@ from skimage.color import rgb2gray
 from skimage.metrics import peak_signal_noise_ratio, structural_similarity
 
 
-def generate_gaussian_experiment_high(parameters):
+def generate_gaussian_experiment_high_50(parameters):
     """
     Run the high-noise Gaussian denoising experiment using NLM, GEO-NLM, and BM3D.
     
@@ -33,15 +33,15 @@ def generate_gaussian_experiment_high(parameters):
     """
 
     # Unpack configuration parameters
-    root_dir_output_high = parameters['root_dir_output_high']
+    root_dir_output_high_50 = parameters['root_dir_output_high_50']
     dir_images_general = parameters['dir_images_general']
     dir_out_nlm = parameters['dir_out_nlm']
     dir_out_geonlm = parameters['dir_out_geonlm']
     dir_out_bm3d = parameters['dir_out_bm3d']
     dir_out_results = parameters['dir_out_results']
-    name_pickle_nlm_output_high = parameters['name_pickle_nlm_output_high']
-    name_pickle_results_gnlm_bm3d_output_high = parameters['name_pickle_results_gnlm_bm3d_output_high']
-    name_results_xlsx_nlm_gnlm_bm3d_output_high = parameters['name_results_xlsx_nlm_gnlm_bm3d_output_high']
+    name_pickle_nlm_output_high_50 = parameters['name_pickle_nlm_output_high_50']
+    name_pickle_results_gnlm_bm3d_output_high_50 = parameters['name_pickle_results_gnlm_bm3d_output_high_50']
+    name_results_xlsx_nlm_gnlm_bm3d_output_high_50 = parameters['name_results_xlsx_nlm_gnlm_bm3d_output_high_50']
     f = parameters['f']        # Patch radius (NLM / GEO-NLM)
     t = parameters['t']        # Search window radius (NLM / GEO-NLM)
     alpha = parameters['alpha']  # Weight parameter for adaptive score / geometry
@@ -135,7 +135,7 @@ def generate_gaussian_experiment_high(parameters):
         )
 
     # Save all NLM results (for all images) to a pickle file
-    save_pickle(array_nln_high_filtereds, dir_out_results, name_pickle_nlm_output_high)
+    save_pickle(array_nln_high_filtereds, dir_out_results, name_pickle_nlm_output_high_50)
 
     # ---------------------------------------
     # 2) BM3D AND GEO-NLM PHASE (high NOISE)
@@ -144,7 +144,7 @@ def generate_gaussian_experiment_high(parameters):
     array_gnlm_bm3d_high_filtereds = []
 
     # Reload the NLM results to use them as input for GEO-NLM and BM3D
-    vector = load_pickle(dir_out_results, name_pickle_nlm_output_high)
+    vector = load_pickle(dir_out_results, name_pickle_nlm_output_high_50)
 
     for array in vector:
         # Retrieve data saved during the NLM phase
@@ -293,11 +293,11 @@ def generate_gaussian_experiment_high(parameters):
         array_gnlm_bm3d_high_filtereds.append(dict)
 
     # Save the combined GEO-NLM and BM3D results to pickle
-    save_pickle(array_gnlm_bm3d_high_filtereds, dir_out_results, name_pickle_results_gnlm_bm3d_output_high)
+    save_pickle(array_gnlm_bm3d_high_filtereds, dir_out_results, name_pickle_results_gnlm_bm3d_output_high_50)
 
     # Export all results (NLM, GEO-NLM, BM3D) to an XLSX spreadsheet
     save_results_to_xlsx(
         array_gnlm_bm3d_high_filtereds,
         dir_out_results,
-        name_results_xlsx_nlm_gnlm_bm3d_output_high
+        name_results_xlsx_nlm_gnlm_bm3d_output_high_50
     )

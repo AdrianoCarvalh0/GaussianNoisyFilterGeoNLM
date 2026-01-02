@@ -6,10 +6,10 @@ sys.path.append(str(PROJECT_ROOT))
 from pathlib import Path
 import numpy as np
 import pandas as pd
-from pathlib import Path
 import pickle
 from typing import Any, Union
 import os
+
 
 PathLike = Union[str, Path]
 
@@ -158,3 +158,18 @@ def get_multiplier(h, sigma, h_lim=60.0, sigma_lim=10.0):
     with no false positives on moderate/high noise images.
     """
     return 1.40 if is_low_noise_or(h, sigma, h_lim, sigma_lim) else 1.55
+
+
+def ensure_output_dirs(base_output_dir):
+    """
+    Ensure that all required output directories exist.
+
+    Parameters
+    ----------
+    base_output_dir : str or Path
+        Base directory where experiment outputs are stored.
+    """
+    base = Path(base_output_dir)
+
+    for subdir in ['NLM', 'GEONLM', 'BM3D', 'results']:
+        (base / subdir).mkdir(parents=True, exist_ok=True)

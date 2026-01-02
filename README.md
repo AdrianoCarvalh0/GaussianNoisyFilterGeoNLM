@@ -83,10 +83,10 @@ docker run --gpus=all --shm-size=4g -it --rm \
 
 ## Repository Layout
 GaussianExperiments/<br/>
-├─ .devcontainer/               # VS Code container settings<br/> 
-│   └─ Dockerfile <br/> 
-│   └─ conda-spec-linux-64.txt  # Frozen Conda environment<br/> 
-│   └─ requirements-pip.txt     # Extra pip-only dependencies<br/> 
+├─ .devcontainer/               # VS Code container settings<br/>
+│   └─ Dockerfile <br/>
+│   └─ conda-spec-linux-64.txt  # Frozen Conda environment<br/>
+│   └─ requirements-pip.txt     # Extra pip-only dependencies<br/>
 │
 ├─ data/<br/> 
 │  ├─ input/<br/> 
@@ -95,7 +95,7 @@ GaussianExperiments/<br/>
 │  │  └─ pg_noisy/       # Poisson–Gaussian noisy images (PNG)<br/> 
 │  │  └─ set12/          # Set12 benchmark dataset images (PNG)<br/> 
 │  └─ output/<br/> 
-│     ├─ pg_noisy/
+│     ├─ pg_noisy/<br/> 
 │     │  └─ {bm3d,nlm,geonlm}/<br/> 
 │     ├─ set12/<br/> 
 │     │  └─ high_noisy/> {bm3d,geonlm,nlm,results,test}/<br/> 
@@ -112,42 +112,79 @@ GaussianExperiments/<br/>
 |
 ├─ src/<br/>
 │  ├─ gaussian_experiments/<br/>
-│  │   └─ functions/ # Experiment-related utility functions<br/>   
+│  │   └─ functions/ # Experiment-related utility functions<br/>
 |  |   └─ metrics/   # Metric computation and result plotting<br/>
-|  |   └─ pg_noisy/  # Poisson–Gaussian noise experiments<br/> 
-|  |   └─ set12/     # Set12 benchmark experiments<br/> 
-|      └─ set50/     # 50-image dataset experiments<br/> 
-├─ Makefile<br/> 
-└─ README.md<br/> 
+|  |   └─ pg_noisy/  # Poisson–Gaussian noise experiments<br/>
+|  |   └─ set12/     # Set12 benchmark experiments<br/>
+|      └─ set50/     # 50-image dataset experiments<br/>
+├─ Makefile<br/>
+└─ README.md<br/>
 
 ## Running Experiments
 
-From **inside the container:**
+All experiments are executed from **inside the container:** and are organized by dataset.
+Navigate to the desired dataset directory and run the corresponding main script for the noise regime of interest.
 
-**LOW noise**
-python -m src.main_low
+cd src/gaussian_experiments/<dataset>/
+python -m main_<experiment>python -m src.main_low
 
-**MODERATE noise**
-python -m src.main_moderate
+Where <dataset> can be:
 
-**HIGH noise**
-python -m src.main_high
+set12 — Set12 benchmark experiments
 
+set50 — 50-image dataset experiments
 
-Outputs will appear in:
-
-data/output/{low_noisy,moderate_noisy,high_noisy}/test/{NLM,BM3D,GEONLM}/
+pg_noisy — real Poisson–Gaussian noisy image experiments
 
 
-Each script saves:
+## 🧪 Gaussian noise experiments (Set12 and Set50)
+For synthetic Gaussian noise experiments, the following noise regimes are available:
+
+Low noise: main_low
+
+Moderate noise: main_moderate
+
+High noise: main_high
+
+High noise (σ = 25): main_high_25
+
+Extreme noise (σ = 50): main_high_50
+
+cd src/gaussian_experiments/set12
+python -m main_high_25
+
+## 🌫️ Real Poisson–Gaussian experiments
+
+Experiments on real Poisson–Gaussian noisy images are located in:
+
+cd src/gaussian_experiments/pg_noisy
+python -m main_real
+
+
+## 📁 Outputs
+
+data/output/
+├── set12/
+├── set50/
+└── pg_noisy/
+    └── test/
+        ├── NLM/
+        ├── BM3D/
+        └── GEONLM/
+
+Each experiment generates:
 
 Denoised images (.png)
 
-Pickle tables (.pkl)
+Serialized result tables (.pkl)
 
-Consolidated metrics spreadsheet (.xlsx)
+Consolidated metrics spreadsheets (.xlsx)
 
-Selected hyperparameters (h, mult, etc.)
+Selected hyperparameters (e.g., 
+ℎ
+h, multipliers)
+
+
 
 ## Experiment Pipeline (Flowchart)
 
@@ -156,7 +193,7 @@ graph TD
 
     A["Clean image
 data/input/general_images"] --> B["Add Gaussian noise
-(low / moderate / high)"]
+(low / moderate / high / high25 / high50)"]
 
     B --> C["NLM
 (adaptive h selection)"]
@@ -209,17 +246,6 @@ conda list --explicit --md5 > conda-spec-linux-64.txt
 
 Avoid adding Conda-managed packages to requirements-pip.txt.
 
-## Makefile (Helper)
-
-The repository includes a Makefile for convenience.
-
-Available commands:
-make dirs      # create output dirs
-make low       # run LOW-noise experiments
-make moderate  # run MODERATE-noise experiments
-make high      # run HIGH-noise experiments
-make all       # run all experiments (low + moderate + high)
-make clean     # wipe output data
 
 ## Data & Outputs
 
@@ -279,14 +305,10 @@ Dev Containers: Rebuild and Reopen in Container
 
 Put clean images into:
 
-data/input/general_images/
+data/input/
 
 **C. Run experiments**
-make low
-make moderate
-make high
 
-Or all:
 
 make all
 

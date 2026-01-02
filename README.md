@@ -145,7 +145,7 @@ For synthetic Gaussian noise experiments, the following noise regimes are availa
 
 **Example**
 ```cd src/gaussian_experiments/set12
-python -m main_high_25
+python -m main_high_25```
 
 ## 🌫️ Real Poisson–Gaussian experiments
 
@@ -153,7 +153,7 @@ Experiments on real Poisson–Gaussian noisy images are located in:
 
 **Example**
 ```cd src/gaussian_experiments/pg_noisy
-python -m main_real
+python -m main_real```
 
 
 ## 📁 Outputs

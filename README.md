@@ -74,12 +74,14 @@ PY
 ## Quick Start (Docker CLI)
 
 # Build image
+```bash
 docker build -t gaussian-frozen .
-
+```
 # Open container
+```bash
 docker run --gpus=all --shm-size=4g -it --rm \
     -v "$PWD":/workspace -w /workspace gaussian-frozen bash
-
+```
 
 ## Repository Layout
 GaussianExperiments/<br/>
@@ -124,19 +126,18 @@ GaussianExperiments/<br/>
 All experiments are executed from **inside the container:** and are organized by dataset.
 Navigate to the desired dataset directory and run the corresponding main script for the noise regime of interest.
 
+```bash
 cd src/gaussian_experiments/<dataset>/
 python -m main_<experiment>
+```
 
 Where <dataset> can be:
-
 - set12 — Set12 benchmark experiments
 - set50 — 50-image dataset experiments
 - pg_noisy — real Poisson–Gaussian noisy image experiments
 
-
 ## 🧪 Gaussian noise experiments (Set12 and Set50)
 For synthetic Gaussian noise experiments, the following noise regimes are available:
-
 - Low noise: main_low
 - Moderate noise: main_moderate
 - High noise: main_high
@@ -144,21 +145,24 @@ For synthetic Gaussian noise experiments, the following noise regimes are availa
 - Extreme noise (σ = 50): main_high_50
 
 **Example**
-```cd src/gaussian_experiments/set12
-python -m main_high_25```
+```bash 
+$ cd src/gaussian_experiments/set12
+$ python -m main_high_25
+```
 
 ## 🌫️ Real Poisson–Gaussian experiments
 
 Experiments on real Poisson–Gaussian noisy images are located in:
 
 **Example**
-```cd src/gaussian_experiments/pg_noisy
-python -m main_real```
-
+```bash
+$ cd src/gaussian_experiments/pg_noisy
+$ python -m main_real
+```
 
 ## 📁 Outputs
 
-data/output/
+data/output/<br/>
 ├── set12/<br/>
 ├── set50/<br/>
 └── pg_noisy/<br/>
@@ -231,7 +235,6 @@ Updating the environment
 If you modify packages inside the container:
 
 conda list --explicit --md5 > conda-spec-linux-64.txt
-
 
 Avoid adding Conda-managed packages to requirements-pip.txt.
 

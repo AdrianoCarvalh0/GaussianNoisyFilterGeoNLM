@@ -3,7 +3,7 @@ from Gaussian_high_25 import generate_gaussian_experiment_high
 if __name__ == '__main__':
 
     # Base output directory for the high-noise experiment results
-    root_dir_output_high_25 = f'/workspace/data/output/high_noisy_25'
+    root_dir_output_high_25 = f'/workspace/data/output/set50/high_noisy_25/test'
 
     # Directory containing the general input images used in the experiment
     dir_images_general = f'/workspace/data/input/general_images'

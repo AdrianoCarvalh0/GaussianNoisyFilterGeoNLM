@@ -3,7 +3,7 @@ from Gaussian_low import generate_gaussian_experiment_low
 if __name__ == '__main__':
 
     # Base output directory for the low-noise experiment results
-    root_dir_output_low = f'/workspace/data/output/set12/low_noisy'
+    root_dir_output_low = f'/workspace/data/output/set12/low_noisy/test'
 
     # Directory containing the general input images used in the experiment
     dir_images_set12 = f'/workspace/data/input/set12'

@@ -3,10 +3,10 @@ from Gaussian_moderate import generate_gaussian_experiment_moderate
 if __name__ == '__main__':
 
     # Base output directory for the moderate-noise experiment results
-    root_dir_output_moderate = f'/workspace/data/output/moderate_noisy/test'
+    root_dir_output_moderate = f'/workspace/data/output/set50/moderate_noisy/test'
 
     # Directory containing the general input images used in the experiment
-    dir_images_general = f'/workspace/data/input/0'
+    dir_images_general = f'/workspace/data/input/general_images'
       
     # Dictionary of parameters passed to the experiment generator
     parameters = {

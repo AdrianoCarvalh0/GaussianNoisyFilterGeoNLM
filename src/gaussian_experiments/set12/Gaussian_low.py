@@ -1,5 +1,9 @@
-from skimage.restoration import estimate_sigma
 import sys
+from pathlib import Path
+PROJECT_ROOT = Path(__file__).resolve().parents[1]
+sys.path.append(str(PROJECT_ROOT))
+
+from skimage.restoration import estimate_sigma
 import numpy as np
 import cupy as cp
 import skimage
@@ -9,11 +13,7 @@ from functions.nlm_functions import (compute_adaptive_q, select_best_h_using_ada
 from functions.geonlm_functions import run_geonlm_pipeline
 import time
 from bm3d import bm3d, BM3DProfile
-from skimage.restoration import estimate_sigma
 from skimage.color import rgb2gray
-from skimage.filters import median
-from skimage.morphology import disk
-
 from skimage.metrics import peak_signal_noise_ratio, structural_similarity
 
 

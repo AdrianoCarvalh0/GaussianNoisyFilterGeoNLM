@@ -3,10 +3,10 @@ from Gaussian_high import generate_gaussian_experiment_high
 if __name__ == '__main__':
 
     # Base output directory for the high-noise experiment results
-    root_dir_output_high = f'/workspace/data/output/high_noisy/test'
+    root_dir_output_high = f'/workspace/data/output/set50/high_noisy/test'
 
     # Directory containing the general input images used in the experiment
-    dir_images_general = f'/workspace/data/input/0'
+    dir_images_general = f'/workspace/data/input/general_images'
       
     # Dictionary of parameters passed to the experiment generator
     parameters = {

@@ -1,3 +1,8 @@
+import sys
+from pathlib import Path
+PROJECT_ROOT = Path(__file__).resolve().parents[1]
+sys.path.append(str(PROJECT_ROOT))
+
 from skimage.restoration import estimate_sigma
 import numpy as np
 import cupy as cp

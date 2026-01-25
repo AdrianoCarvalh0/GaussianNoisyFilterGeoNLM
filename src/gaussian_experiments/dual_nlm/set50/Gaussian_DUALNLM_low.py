@@ -242,23 +242,24 @@ def generate_gaussian_experiment_low_dual_nlm(parameters):
     name_pickle_dual_nlm_output_low = parameters['name_pickle_dual_nlm_output_low']
     name_results_xlsx_dual_nlm_output_low = parameters['name_results_xlsx_dual_nlm_output_low']
     pickle_results_summary_low = parameters['pickle_results_summary_low']
-    f = parameters['f']        # Patch radius (NLM)
-    t = parameters['t']        # Search window radius (NLM ) 
-    h = parameters['h']        # suavization parameter (NLM_KL)
-    alpha = parameters['alpha']  # weight of mixed score
-	
-    # List all input image filenames in the general image directory
-    array_dir = read_directories(dir_images_general)
+    pickle_results_cameraman = parameters['pickle_results_cameraman']
+    f = parameters['f']
+    t = parameters['t']
+    h = parameters['h']
+    alpha = parameters['alpha']
 
-    # Will store intermediate NLM results for all images
+    array_dir = read_directories(dir_images_general)
     array_dual_nln_low_filtereds = []
 
     vector = load_pickle('array_pickle_nlm', pickle_results_summary_low)
-	    
+    cameraman = load_pickle('pickle_cameraman', pickle_results_cameraman)    
+
     for vect in vector:
         file_name = vect['file_name']
-        img_noisse_gaussian_np = vect['img_noisse_gaussian_np']
-        estimated_sigma_gaussian_np = vect['estimated_sigma_gaussian']		
+        if file_name == '0.gif':
+            img_noisse_gaussian_np = cameraman['img_noisse_gaussian_np']
+        else:
+            img_noisse_gaussian_np = vect['img_noisse_gaussian_np']
 
         # Read image from disk
         img = skimage.io.imread(f'{dir_images_general}/{file_name}')        

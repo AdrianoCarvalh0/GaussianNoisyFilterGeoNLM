@@ -1,9 +1,10 @@
 import sys
 from pathlib import Path
 
-PROJECT_ROOT = Path(__file__).resolve().parents[1]
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
+
 
 from Gaussian_DUALNLM_high_25 import generate_gaussian_experiment_high_25_dual_nlm
 
@@ -15,7 +16,7 @@ if __name__ == '__main__':
     root_dir_output_high_25 = Path('/workspace/data/output/set50/high_noisy_25') 
 
     # Directory containing the input images used in the experiment
-    dir_images_general = Path('/workspace/data/input/set50')
+    dir_images_general = Path('/workspace/data/input/general_images')
 
     # Ensure required output directories exist
     ensure_output_dirs(root_dir_output_high_25)

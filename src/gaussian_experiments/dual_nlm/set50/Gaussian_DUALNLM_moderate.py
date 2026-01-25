@@ -1,7 +1,8 @@
 import sys
 from pathlib import Path
-PROJECT_ROOT = Path(__file__).resolve().parents[1]
-sys.path.append(str(PROJECT_ROOT))
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
+if str(PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(PROJECT_ROOT))
 
 from skimage.restoration import estimate_sigma
 import numpy as np
@@ -138,12 +139,11 @@ def generate_gaussian_experiment_moderate_dual_nlm(parameters):
     cameraman = load_pickle('pickle_cameraman', pickle_results_cameraman)    
 
     for vect in vector:
-        file_name = vect['file_name']
+        file_name = vect['file_name']        
         if file_name == '0.gif':
-            img_noisse_gaussian_np = cameraman['img_noisse_gaussian_np']
+            img_noisse_gaussian_np = cameraman[0]['img_noisse_gaussian_np']
         else:
-            img_noisse_gaussian_np = vect['img_noisse_gaussian_np']
-        
+            img_noisse_gaussian_np = vect['img_noisse_gaussian_np']        
         img = skimage.io.imread(f'{dir_images_general}/{file_name}')
 
         if img.ndim == 4:

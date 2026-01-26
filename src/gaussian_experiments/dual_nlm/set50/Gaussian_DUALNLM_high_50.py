@@ -243,7 +243,7 @@ def generate_gaussian_experiment_high_50_dual_nlm(parameters):
     name_pickle_dual_nlm_output_high_50 = parameters['name_pickle_dual_nlm_output_high_50']
     name_results_xlsx_dual_nlm_output_high_50 = parameters['name_results_xlsx_dual_nlm_output_high_50']
     pickle_results_summary_high_50 = parameters['pickle_results_summary_high_50']
-    pickle_results_cameraman = parameters['pickle_results_cameraman']
+
     f = parameters['f']
     t = parameters['t']
     h = parameters['h']
@@ -253,14 +253,12 @@ def generate_gaussian_experiment_high_50_dual_nlm(parameters):
     array_dual_nln_high_50_filtereds = []
 
     vector = load_pickle('array_pickle_nlm', pickle_results_summary_high_50)
-    cameraman = load_pickle('pickle_cameraman', pickle_results_cameraman)    
+   
 
     for vect in vector:
         file_name = vect['file_name']
-        if file_name == '0.gif':
-            img_noisse_gaussian_np = cameraman[0]['img_noisse_gaussian_np']
-        else:
-            img_noisse_gaussian_np = vect['img_noisse_gaussian_np']
+     
+        img_noisse_gaussian_np = vect['img_noisse_gaussian_np']
         
         img = skimage.io.imread(f'{dir_images_general}/{file_name}')     
 

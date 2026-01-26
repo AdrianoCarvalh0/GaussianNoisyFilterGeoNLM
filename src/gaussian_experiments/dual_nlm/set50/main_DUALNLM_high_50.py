@@ -36,8 +36,8 @@ if __name__ == '__main__':
         # Filenames for serialized results (pickle/XLSX)
         'name_pickle_dual_nlm_output_high_50': 'array_dual_nlm_high_50_filtereds.pkl',    
         'name_results_xlsx_dual_nlm_output_high_50':'dual_nlm_high_50_filtereds.xlsx',
-        'pickle_results_summary_high_50': '/workspace/data/output/set50/high_noisy_50/results/array_nln_high_50_filtereds.pkl',
-        'pickle_results_cameraman': '/workspace/data/output/set50/high_noisy_50/results/array_nln_high_50_filtereds_cameraman.pkl',
+        'pickle_results_summary_high_50': '/workspace/data/output/set50/high_noisy_50/results/array_nln_high_filtereds.pkl',
+      
 
         # Algorithmic parameters used internally by the experiment
         'f': 4,        # Patch radius

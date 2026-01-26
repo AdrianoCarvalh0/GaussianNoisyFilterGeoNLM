@@ -138,44 +138,58 @@ def generate_gaussian_experiment_moderate_dual_nlm(parameters):
     vector = load_pickle('array_pickle_nlm', pickle_results_summary_moderate)
     cameraman = load_pickle('pickle_cameraman', pickle_results_cameraman)    
 
-    for vect in vector:
+    for vect in vector[7:]:
         file_name = vect['file_name']        
         if file_name == '0.gif':
             img_noisse_gaussian_np = cameraman[0]['img_noisse_gaussian_np']
+            img = skimage.io.imread(f'{dir_images_general}/0.png')
         else:
-            img_noisse_gaussian_np = vect['img_noisse_gaussian_np']        
-        img = skimage.io.imread(f'{dir_images_general}/{file_name}')
-
+            img_noisse_gaussian_np = vect['img_noisse_gaussian_np']
+            img = skimage.io.imread(f'{dir_images_general}/{file_name}')
+        
+        # Read image from disk
+        
+        # If the image has 4 dimensions (e.g. multi-page TIFF), use only the first slice
         if img.ndim == 4:
             img = img[0]
 
+        # If the image has an alpha channel (RGBA), discard the alpha and keep RGB
         if img.ndim == 3 and img.shape[-1] == 4:
             img = img[..., :3]
 
+        # Convert RGB to grayscale if the image is color
         if img.ndim == 3 and img.shape[-1] == 3:
             img = skimage.color.rgb2gray(img)
 
+        # Ensure the image is in [0, 255] as float32
         if img.dtype.kind == 'f':
+            # If already float, clip to [0,1] then scale to [0,255]
             img = (np.clip(img, 0, 1) * 255).astype(np.float32)
         else:
+            # If integer, just cast to float32
             img = img.astype(np.float32)
 
-        filtrada = NLM_KL(img_noisse_gaussian_np, h, f, t)
-        result_uint8 = np.clip(filtrada, 0, 255).astype(np.uint8)
+        m, n = img.shape  # Image dimensions (not used later, but kept for clarity)
 
+        filtrada = NLM_KL(img_noisse_gaussian_np, h, f, t)      
+
+        result_uint8 = np.clip(filtrada, 0, 255).astype(np.uint8)  
+
+        # Save NLM-filtered image to disk
         skimage.io.imsave(
             f'{dir_out_dualnlm}/{file_name}',
             np.clip(filtrada, 0, 255).astype(np.uint8)
         )
-
+        # Quality metrics
         psnr = peak_signal_noise_ratio(img, result_uint8, data_range=255)
         ssim = structural_similarity(img, result_uint8, data_range=255)
-        score = alpha * psnr + (1 - alpha) * (ssim * 100)
 
-        print(f"PSNR = {psnr:.2f} | SSIM = {ssim:.4f} | Score = {score:.2f}")
+        # Mixed score (PSNR + scaled SSIM)
+        score = alpha * psnr + (1 - alpha) * (ssim * 100)
+        print(f"PSNR = {psnr:.8f} | SSIM = {ssim:.8f} | Score = {score:.8f} | Image: {file_name}")
 
         dct = {
-            'filtrada': filtrada,
+            'filtrada': filtrada,   
             'psnr': psnr,
             'ssim': ssim,
             'score': score,

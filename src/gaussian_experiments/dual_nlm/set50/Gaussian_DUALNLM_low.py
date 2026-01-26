@@ -255,16 +255,17 @@ def generate_gaussian_experiment_low_dual_nlm(parameters):
     vector = load_pickle('array_pickle_nlm', pickle_results_summary_low)
     cameraman = load_pickle('pickle_cameraman', pickle_results_cameraman)    
 
-    for vect in vector:
-        file_name = vect['file_name']
+    for vect in vector[7:]:
+        file_name = vect['file_name']        
         if file_name == '0.gif':
             img_noisse_gaussian_np = cameraman[0]['img_noisse_gaussian_np']
+            img = skimage.io.imread(f'{dir_images_general}/0.png')
         else:
             img_noisse_gaussian_np = vect['img_noisse_gaussian_np']
-
+            img = skimage.io.imread(f'{dir_images_general}/{file_name}')
+        
         # Read image from disk
-        img = skimage.io.imread(f'{dir_images_general}/{file_name}')        
-
+        
         # If the image has 4 dimensions (e.g. multi-page TIFF), use only the first slice
         if img.ndim == 4:
             img = img[0]
@@ -296,16 +297,15 @@ def generate_gaussian_experiment_low_dual_nlm(parameters):
             f'{dir_out_dualnlm}/{file_name}',
             np.clip(filtrada, 0, 255).astype(np.uint8)
         )
-		  # Quality metrics
+        # Quality metrics
         psnr = peak_signal_noise_ratio(img, result_uint8, data_range=255)
         ssim = structural_similarity(img, result_uint8, data_range=255)
 
         # Mixed score (PSNR + scaled SSIM)
         score = alpha * psnr + (1 - alpha) * (ssim * 100)
-        print(f"PSNR = {psnr:.2f} | SSIM = {ssim:.4f} | Score = {score:.2f}")
+        print(f"PSNR = {psnr:.8f} | SSIM = {ssim:.8f} | Score = {score:.8f} | Image: {file_name}")
 
         dct = {
-
             'filtrada': filtrada,   
             'psnr': psnr,
             'ssim': ssim,

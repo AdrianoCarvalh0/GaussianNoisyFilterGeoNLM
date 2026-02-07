@@ -29,8 +29,7 @@ def generate_gaussian_experiment_low(parameters):
       7. Saves filtered images and metrics (pickle + XLSX).
     """
 
-    # Unpack configuration parameters
-    root_dir_output_low = parameters['root_dir_output_low']
+    # Unpack configuration parameters    
     dir_images_set12 = parameters['dir_images_set12']    
     dir_out_geonlm = parameters['dir_out_geonlm']    
     dir_out_results = parameters['dir_out_results']

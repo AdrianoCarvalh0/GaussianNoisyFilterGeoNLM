@@ -83,9 +83,8 @@ def process_pixel(i, j, img_n, f, t, h, nn, m, n):
     G = nx.from_scipy_sparse_array(knnGraph)
 
     # Shortest paths from 'source' to all nodes (Dijkstra on weighted graph)
-    #length, _ = nx.single_source_bellman_ford(G, source)  # Use Bellman-Ford for potential negative weights (distances)
-    length, _ = nx.single_source_dijkstra(G, source)
-
+    length, _ = nx.single_source_bellman_ford(G, source)  # Use Bellman-Ford for potential negative weights (distances)
+    
     # Extract nodes and distances in aligned arrays
     points = list(length.keys())
     distancias = np.array(list(length.values()), dtype=np.float32)

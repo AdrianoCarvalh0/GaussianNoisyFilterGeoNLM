@@ -3,33 +3,35 @@ from pathlib import Path
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 sys.path.append(str(PROJECT_ROOT))
 
-from gaussian_experiments.set12.ablation.Gaussian_low import generate_gaussian_experiment_low
+from Gaussian_low_ford import generate_gaussian_experiment_low
 from Utils import ensure_output_dirs
 
 if __name__ == '__main__':
 
     # Base output directory for the low-noise experiment results
-    root_dir_nn10_4_5 = Path('/workspace/data/output/set12/ablation/low_noisy/nn_10_4_5')    
+    root_dir_output_low = Path('/workspace/data/output/set12/low_noisy')
+
+    dir_ford = Path('/workspace/data/output/set12/ablation/low_noisy/Ford')
    
-    dir_out_results = root_dir_nn10_4_5 / 'results'
+    dir_out_results = dir_ford / 'results'
 
     # Directory containing the input images used in the experiment
     dir_images_set12 = Path('/workspace/data/input/set12')
 
     # Ensure required output directories exist
-    ensure_output_dirs(root_dir_nn10_4_5)
+    ensure_output_dirs(root_dir_output_low)
 
     # Dictionary of parameters passed to the experiment generator
     parameters = {
 
         # Paths for reading input and saving results
-        'root_dir_nn10_4_5': str(root_dir_nn10_4_5),
+        'root_dir_output_low': str(root_dir_output_low),
         'dir_images_set12': str(dir_images_set12),
 
         'dir_out_results': str(dir_out_results),
 
         # Output folders for each filtering method
-        'dir_out_geonlm': str(root_dir_nn10_4_5 / 'GEONLM'),
+        'dir_out_geonlm': str(dir_ford / 'GEONLM'),
 
         # Filenames for serialized results (pickle/XLSX)      
         'name_pickle_results_gnlm_output_low': 'array_gnlm_low_filtereds.pkl',   
@@ -38,7 +40,7 @@ if __name__ == '__main__':
 
         # Algorithmic parameters used internally by the experiment
         'f': 4,        # Patch radius
-        't': 5,        # Search window radius
+        't': 7,        # Search window radius
         'alpha': 0.5,  # Geometric weight (for GEO-NLM)
         'nn': 10,      # Number of nearest neighbors
     }

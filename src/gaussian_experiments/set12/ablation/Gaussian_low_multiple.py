@@ -70,6 +70,7 @@ def generate_gaussian_experiment_low(parameters):
     f = parameters['f']        # Patch radius (NLM / GEO-NLM)
     t = parameters['t']        # Search window radius (NLM / GEO-NLM)
     alpha = parameters['alpha']  # Weight parameter for adaptive score / geometry
+    nn = parameters['nn']  # Number of nearest neighbors / similar patches in GEO-NLM
 
     # List all input image filenames in the set12 image directory
     array_dir = read_directories(dir_images_set12)
@@ -81,15 +82,11 @@ def generate_gaussian_experiment_low(parameters):
     vector = load_pickle('array_pickle_nlm', pickle_results_summary_low)
 
 
-    import pdb; pdb.set_trace()  # Debug
+    #import pdb; pdb.set_trace()  # Debug
 
-    array = vector[1]  # Debug: Inspect the first element of the loaded NLM results to verify its structure and contents
+    array = vector[4]  # Debug: Inspect the first element of the loaded NLM results to verify its structure and contents
 
-    
-    
-
-
-    
+        
     # Retrieve data saved during the NLM phase
     img_noisse_gaussian_np = array['img_noisse_gaussian_np']
     nlm_h = array['nlm_h']
@@ -115,67 +112,51 @@ def generate_gaussian_experiment_low(parameters):
     sizes = [128, 256, 384, 512, 768, 1024]
 
     for s in sizes:
-        img_s = resize_image(img, s)
+        img_s = resize_image(img, s)  
+        img_nois = resize_image(img_noisse_gaussian_np, s)  
 
-        start = time.time()
-        _ = geo_nlm(img_s, f=4, t=7, nn=10)
-        elapsed = time.time() - start
     
-    img_128 = img.downscale(4)  # Create a downscaled version of the image for faster processing during debugging
-    img_256 = img.downscale(2)  # Create a downscaled version of the image for faster processing during debugging
-    img_512 = img  # Use the original image for the full-resolution processing
+        ini = time.time()
+        # Select multiplier (h scaling) based on NLM h and estimated sigma
+        mult = get_multiplier(nlm_h, estimated_sigma_gaussian)
 
+        #import pdb; pdb.set_trace()  # Debug breakpoint to inspect variables before running GEO-NLM
 
+        # Run the GEO-NLM pipeline on the image
+        img_filtered_gnlm, h_gnlm, psnr_gnlm, ssim_gnlm, score_gnlm = run_geonlm_pipeline(
+            img_s,
+            nlm_h,
+            img_nois,
+            f,
+            t,
+            mult,
+            nn
+        )
 
-    # Reuse parameters for GEO-NLM
-    f = parameters['f']
-    t = parameters['t']
-    nn = parameters['nn']  # Number of nearest neighbors / similar patches in GEO-NLM
+        end = time.time()
+        time_geonlm = end - ini  # GEO-NLM execution time (not stored, but kept here if needed)      
+        
+        print(f"PSNR = {psnr_gnlm:.2f} | SSIM = {ssim_gnlm:.4f} | Score = {score_gnlm:.4f} | time_geonlm = {time_geonlm:.2f}s | Image: {file_name} | Size: {s}x{s}")
+        # Save GEO-NLM-filtered image
+        skimage.io.imsave(
+            f'{dir_out_geonlm}/{file_name}_gnlm_{s}x{s}.png',
+            img_filtered_gnlm.astype(np.uint8)
+        )         
 
-    # ------------------
-    # GEO-NLM DENOISING
-    # ------------------
+        # Collect all metrics for this image
+        dict = {
+            'nlm_h': nlm_h,
+            'h_gnlm': h_gnlm,
+            'estimated_sigma_gaussian': estimated_sigma_gaussian,
+            'ssim_gnlm': ssim_gnlm,
+            'psnr_gnlm': psnr_gnlm,
+            'score_gnlm': score_gnlm,
+            'time_geonlm': time_geonlm,     
+            'file_name': file_name,
+            'image_size': s
+        }
 
-    ini = time.time()
-    # Select multiplier (h scaling) based on NLM h and estimated sigma
-    mult = get_multiplier(nlm_h, estimated_sigma_gaussian)
-
-    #import pdb; pdb.set_trace()  # Debug breakpoint to inspect variables before running GEO-NLM
-
-    # Run the GEO-NLM pipeline on the image
-    img_filtered_gnlm, h_gnlm, psnr_gnlm, ssim_gnlm, score_gnlm = run_geonlm_pipeline(
-        img,
-        nlm_h,
-        img_noisse_gaussian_np,
-        f,
-        t,
-        mult,
-        nn
-    )
-
-    end = time.time()
-    time_geonlm = end - ini  # GEO-NLM execution time (not stored, but kept here if needed)      
-    
-    print(f"PSNR = {psnr_gnlm:.2f} | SSIM = {ssim_gnlm:.4f} | Score = {score_gnlm:.4f} | time_geonlm = {time_geonlm:.2f}s | Image: {file_name}")
-    # Save GEO-NLM-filtered image
-    skimage.io.imsave(
-        f'{dir_out_geonlm}/{file_name}',
-        img_filtered_gnlm.astype(np.uint8)
-    )         
-
-    # Collect all metrics for this image
-    dict = {
-        'nlm_h': nlm_h,
-        'h_gnlm': h_gnlm,
-        'estimated_sigma_gaussian': estimated_sigma_gaussian,
-        'ssim_gnlm': ssim_gnlm,
-        'psnr_gnlm': psnr_gnlm,
-        'score_gnlm': score_gnlm,
-        'time_geonlm': time_geonlm,     
-        'file_name': file_name  
-    }
-
-    array_gnlm_low_filtereds.append(dict)
+        array_gnlm_low_filtereds.append(dict)
 
     # Save the combined GEO-NLM and BM3D results to pickle
     save_pickle(array_gnlm_low_filtereds, dir_out_results, name_pickle_results_gnlm_output_low)

@@ -58,16 +58,17 @@ def plota_grafo(G, centro, dimensions=2, layout='spring'):
         if layout == 'kamada':
             pos = nx.kamada_kawai_layout(G)
         else:
-            pos = nx.spring_layout(G, seed=42)
+            pos = nx.spring_layout(G, seed=20)
 
-        fig, ax = plt.subplots(figsize=(18, 18))
+        fig, ax = plt.subplots(figsize=(12, 12))
         nx.draw_networkx(
             G,
             pos,
             ax=ax,
-            node_size=10,
+            node_size=30,
             with_labels=False,
             width=0.1,
+            edge_color='gray',
             alpha=0.7,
         )
         if centro is not None and centro in G.nodes:
@@ -75,7 +76,7 @@ def plota_grafo(G, centro, dimensions=2, layout='spring'):
                 G,
                 pos,
                 ax=ax,
-                node_size=10,
+                node_size=30,
                 nodelist=[centro],
                 node_color='red',
                 alpha=0.7,
@@ -88,6 +89,7 @@ def plota_grafo(G, centro, dimensions=2, layout='spring'):
 def save_region_overview(tipo: str, entries: list[dict]) -> Path:
     image = imread(SOURCE_IMAGE, as_gray=True)
     image = (255 * image).astype(np.uint8)
+    image = np.pad(image, ((PADDING, PADDING), (PADDING, PADDING)), mode='symmetric')
     image_rgb = cv2.cvtColor(image, cv2.COLOR_GRAY2RGB)
     output_path = REGIONS_DIR / f"{tipo}_regions.pdf"
     fig, ax = plt.subplots(figsize=(12, 12))
@@ -95,8 +97,6 @@ def save_region_overview(tipo: str, entries: list[dict]) -> Path:
 
     for entry in entries:
         cx, cy = entry["center"]
-        cx -= PADDING
-        cy -= PADDING
 
         cv2.rectangle(
             image_rgb,
